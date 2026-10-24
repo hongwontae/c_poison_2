@@ -1,0 +1,22 @@
+1. 스레드 동기화
+    1-1. 임계구간 코드가 여러 스레드에서 동시에 실행되는 일을 막는 것입니다.
+        => 여러 스레드가 공유하는 데이터에 접근하면서 동시에 실행되면 문제가 발생할 수 있는 코드 영역
+    1-2. 동기화 객체를 이용해 구현할 수 있습니다.
+        => Critical section(User 객체), Mutex(Kernel 객체), Semaphore(Kernel 객체)
+        => Mutex와 Semaphore는 Kernal 영역에서 주로 사용하는 동기화 방법입니다.
+        => User Mode로 가져와서 사용할 수 있으나 불필요함 -> 기본적으로 Kernel이 사용하는 것
+
+
+2. Windows 환경에서 임계구간 구간설정
+    2-1. 임계구간을 잘못 설정하면 dead_lock이나 성능이 저하되는 일이 발생합니다.
+    2-2. CRITICAL_SECTION g_cs 전역 변수를 선언합니다.
+    2-3. InitializerCriticalSection(&g_cs);를 호출합니다.
+    2-4. main의 return 0 전에 DeleteCriticalSection(&g_cs)를 호출합니다.
+        => 2-2 ~ 2-4 작업으로 임계 구간을 설정할 수 있는 함수를 사용할 수 있습니다.
+    2-5. EnterCriticalSection(&g_cs)를 사용하면 임계구간의 데이터에 접근하기전에 접근하는 스레드가
+        존재하는지 확인하고 들어갑니다. 그리고 들어가면 다른 스레드가 데이터에 접근할 수 없습니다.
+    2-6. LeaveCriticalSection(&g_cs)를 사용하면 해당 스레드가 임계구간에서 벗어납니다.
+            다른 스레드가 접근가능하다고 표시합니다.
+            
+
+    
